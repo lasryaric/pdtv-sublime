@@ -68,6 +68,7 @@ class UserService extends ProducteevBaseService
      * @param optional string $timezone
      * @param optional string $jobTitle
      * @param optional string $ipAddress
+     * @todo make sure the signup log where the user signedup from
      * @return User $user
      */
     public function signup($email, $password, $firstname, $lastname, $timezone = "UTC", $jobTitle = null, $ipAddress = null)
@@ -584,7 +585,7 @@ class UserService extends ProducteevBaseService
         foreach ($users as $user) {
             $found = true;
             if (!empty($search)) {
-        old todo....old todo....old todo....old todo....$search);
+                $pos = mb_stripos($user->getFullname(), $search);
                 if ($pos !== false && $pos === 0) {
                     $usersFound[] = $user;
                 }

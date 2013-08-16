@@ -1,31 +1,35 @@
 import re
 
 class CodeTodoExtractor:
-    def __init__(self):
+    def __init__(self, lines):
+        self.lines = lines
+        self.todos = []
+
         print('initializing code to extractor...')
 
-    def find_next(self, fd):
+    def get_todos(self):
 
-        while True:
-            try:
-                line_content = fd.next()
-            except StopIteration:
-                break
-            result = self.analyze_line(line_content)
-            if 'new' == result:
-                return self.extract_todo_text(line_content)
+        for lineno in range(len(self.lines)):
+            # try:
+            #     line_content = fd.next()
+            # except StopIteration:
+            #     break
+            line = self.lines[lineno]
+            if self.should_process(line):
+                dic = {}
+                dic['lineno'] = lineno
+                dic['original_line'] = line
+                dic['todo'] = self.extract_todo_text(line)
+                dic['context'] = self.extract_context(lineno, 5)
+                self.todos.append(dic)
 
-        return False
 
+        return self.todos
 
-    def analyze_line(self, line):
+    def should_process(self, line):
         if self.is_comment(line):
             if self.is_todo(line):
-                idTask = self.extract_id_task(line)
-                if idTask != False :
-                    return idTask
-                else:
-                    return 'new'
+                return True
         return False
 
     def is_comment(self, line):
@@ -50,3 +54,12 @@ class CodeTodoExtractor:
         if m:
             return m.group(1)
 
+    def extract_context(self, lineno, size = 5):
+        context = {}
+        maximum = len(self.lines)
+        start = (lineno - size) if (lineno - size >= 0) else 0
+        end = (lineno + size + 1) if (lineno + size + 1 <= maximum) else maximum
+        context['before'] = self.lines[start:lineno]
+        context['after'] = self.lines[lineno + 1:end]
+
+        return context
