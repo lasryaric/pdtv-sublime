@@ -9,6 +9,7 @@ class CodeTodoExtractor:
 
     def get_todos(self):
 
+        position = 0
         for lineno in range(len(self.lines)):
             # try:
             #     line_content = fd.next()
@@ -21,15 +22,18 @@ class CodeTodoExtractor:
                 dic['original_line'] = line
                 dic['todo'] = self.extract_todo_text(line)
                 dic['context'] = self.extract_context(lineno, 5)
+                dic['position'] = position
                 self.todos.append(dic)
 
+            position += len(line) + 1
 
         return self.todos
 
     def should_process(self, line):
         if self.is_comment(line):
             if self.is_todo(line):
-                return True
+                if self.is_already_task(line) == False:
+                    return True
         return False
 
     def is_comment(self, line):
@@ -53,6 +57,13 @@ class CodeTodoExtractor:
         m = re.search('\\@todo (.*)', line)
         if m:
             return m.group(1)
+
+    def is_already_task(self, line):
+        m = re.search('www.producteev.com\\/', line)
+        if m:
+            return True
+
+        return False
 
     def extract_context(self, lineno, size = 5):
         context = {}

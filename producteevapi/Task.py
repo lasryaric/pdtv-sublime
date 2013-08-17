@@ -14,8 +14,8 @@ class Task:
             }
         }
         r = requests.post('https://www.producteev.com/api/tasks?access_token='+access_token, data=json.dumps(payload))
-        #print(r.status_code)
-        # print(r.text)
+        print(r.status_code)
+        print(r.text)
         if r.status_code == 201:
             return json.loads(r.text)
 

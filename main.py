@@ -1,7 +1,7 @@
-from producteevapi.Task import Task
+
 from sublimemodule.CodeTodoExtractor import CodeTodoExtractor
 from gistapi.Gist import Gist
-import string
+from producteevapi.Task import Task
 
 access_token = 'tnt8Cq-3edVU96JwiBAIlxfYP6AJav5GBDs91gTNYJs'
 project_id = '520dbc68039555cc10000014'

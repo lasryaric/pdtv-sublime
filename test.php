@@ -68,7 +68,6 @@ class UserService extends ProducteevBaseService
      * @param optional string $timezone
      * @param optional string $jobTitle
      * @param optional string $ipAddress
-     * @todo make sure the signup log where the user signedup from
      * @return User $user
      */
     public function signup($email, $password, $firstname, $lastname, $timezone = "UTC", $jobTitle = null, $ipAddress = null)
@@ -307,7 +306,7 @@ class UserService extends ProducteevBaseService
     * @param User $user
     * @param string $id
     * @return User $user
-    * @todo handle privacy
+    * @todo handle privacy before production
     */
     public function findOneById(User $user, $id)
     {
@@ -501,7 +500,7 @@ class UserService extends ProducteevBaseService
     * @param User $user
     * @param String $facebookId
     * @return User $fbUser
-    * @todo implement privacy
+    * @todo Facebook OAuth should only be granted to our own api client
     */
     public function getUserByFacebookId($facebookId)
     {
@@ -516,7 +515,6 @@ class UserService extends ProducteevBaseService
     * @param User $user
     * @param String $googleId
     * @return User $googleUser
-    * @todo implement privacy
     */
     public function getUserByGoogleId($googleId)
     {

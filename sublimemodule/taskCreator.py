@@ -1,25 +1,27 @@
-import sublime, sublime_plugin
-import os, commands, re, subprocess, sys
+#!/usr/bin/env python
 
+import sublime
+import sublime_plugin
 
-sys.path.append('/Users/aric.lasry/Desktop/pdtv-sublime/')
-from sublimemodule.CodeTodoExtractor import CodeTodoExtractor
-from producteevapi.Task import Task
+from htmlentitydefs import codepoint2name as cp2n
 
-class taskCreator(sublime_plugin.EventListener):
+class taskCreator(sublime_plugin.TextCommand):
+    def run(self, edit, **args):
+        view = self.view
 
-  def on_post_save(self, view):
-    cte = CodeTodoExtractor()
-    #task = Task()
-    path = view.file_name()
-    fd = open(path, 'r')
-    print(1)
+        for sel in view.sel():
+            buf = []
 
-    # for line in fd:
-    #     line_content = fd.next()
-    #     result = cte.analyze_line(line)
-    #     if result == "new":
-    #         task_title = cte.extract_todo_text(line)
-    #         task.create(task_title, project_id, access_token)
+            for pt in xrange(sel.begin(), sel.end()):
+                ch = view.substr(pt)
+                ch_ord = ord(ch)
 
+        if (not view.match_selector(pt, ('meta.tag - string, constant.character.entity'))
+            and ch_ord in cp2n
+            and not (ch in ('"', "'")
+            and view.match_selector(pt, 'string'))):
+                    ch = '&%s;' % cp2n[ch_ord]
 
+        buf.append(ch)
+
+            view.replace(edit, sel, ''.join(buf))

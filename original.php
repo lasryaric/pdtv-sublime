@@ -306,7 +306,7 @@ class UserService extends ProducteevBaseService
     * @param User $user
     * @param string $id
     * @return User $user
-    * @todo handle privacy
+    * @todo handle privacy before production
     */
     public function findOneById(User $user, $id)
     {
@@ -500,7 +500,7 @@ class UserService extends ProducteevBaseService
     * @param User $user
     * @param String $facebookId
     * @return User $fbUser
-    * @todo implement privacy
+    * @todo Facebook OAuth should only be granted to our own api client
     */
     public function getUserByFacebookId($facebookId)
     {
@@ -515,7 +515,6 @@ class UserService extends ProducteevBaseService
     * @param User $user
     * @param String $googleId
     * @return User $googleUser
-    * @todo implement privacy
     */
     public function getUserByGoogleId($googleId)
     {
